@@ -1,71 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>My Website</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Web Programming Exercises</title>
+
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      color: #222;
+      background: #f4f7fb;
+      color: #1f2937;
     }
+
     header {
-      background: #2563eb;
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
       color: white;
-      padding: 20px;
       text-align: center;
+      padding: 45px 20px;
     }
-    nav a {
-      color: white;
-      margin: 0 10px;
-      text-decoration: none;
+
+    header h1 {
+      margin: 0;
+      font-size: 34px;
     }
+
+    header p {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+
     main {
-      max-width: 800px;
-      margin: 60px auto;
-      padding: 20px;
-      text-align: center;
+      width: min(1000px, 92%);
+      margin: 35px auto;
     }
-    button {
-      padding: 12px 24px;
-      border: 0;
-      border-radius: 6px;
+
+    .week {
+      background: white;
+      margin-bottom: 22px;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+    }
+
+    .week-title {
+      background: #e8efff;
+      padding: 16px 22px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #1e3a8a;
+    }
+
+    .exercise-list {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 22px;
+    }
+
+    .exercise-list a {
+      display: block;
+      padding: 13px;
+      color: white;
       background: #2563eb;
-      color: white;
-      cursor: pointer;
-    }
-    footer {
       text-align: center;
-      padding: 20px;
-      background: #222;
-      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .exercise-list a:hover {
+      background: #1e3a8a;
+      transform: translateY(-2px);
+    }
+
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #6b7280;
+    }
+
+    @media (max-width: 600px) {
+      .exercise-list {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
-<body>
 
+<body>
   <header>
-    <h1>My Website</h1>
-    <nav>
-      <a href="#">Home</a>
-      <a href="#about">About</a>
-      <a href="#contact">Contact</a>
-    </nav>
+    <h1>My Web Programming Exercises</h1>
+    <p>Submitted by: Your Name | Roll No: Your Roll Number</p>
   </header>
 
-  <main>
-    <h2>Welcome!</h2>
-    <p>This is a simple HTML website.</p>
-    <button onclick="alert('Hello!')">Click Me</button>
-  </main>
+  <main id="weeks"></main>
 
   <footer>
-    &copy; 2026 My Website
+    © 2026 Web Programming Practical File
   </footer>
 
+  <script>
+    const weeks = [
+      { title: "Week 1", folder: "WEEK-1" },
+      { title: "Week 2", folder: "WEEK-2" },
+      { title: "Week 3 - 01", folder: "WEEK-3-01" },
+      { title: "Week 4 - 02", folder: "WEEK-4-02" },
+      { title: "Week 4", folder: "WEEK-4" }
+    ];
+
+    const main = document.getElementById("weeks");
+
+    weeks.forEach((week) => {
+      let exercises = "";
+
+      for (let i = 1; i <= 8; i++) {
+        exercises += `
+          <a href="${week.folder}/Exercise ${i}.html">
+            Exercise ${i}
+          </a>
+        `;
+      }
+
+      main.innerHTML += `
+        <section class="week">
+          <div class="week-title">${week.title}</div>
+          <div class="exercise-list">
+            ${exercises}
+          </div>
+        </section>
+      `;
+    });
+  </script>
 </body>
 </html>
-
