@@ -9,7 +9,6 @@
         * {
             box-sizing: border-box;
         }
-
         body {
             margin: 0;
             padding: 30px 16px;
@@ -18,41 +17,34 @@
             background: linear-gradient(135deg, #101827, #243b55);
             color: #f8fafc;
         }
-
         .container {
             max-width: 700px;
             margin: auto;
         }
-
         h1 {
             text-align: center;
             color: #facc15;
         }
-
         .subtitle {
             text-align: center;
             color: #cbd5e1;
             margin-bottom: 30px;
         }
-
-        .joke-card, .favourites {
+     .joke-card, .favourites {
             background: #1e293b;
             border: 1px solid #334155;
             border-radius: 16px;
             padding: 25px;
             margin-bottom: 25px;
         }
-
         h2 {
             color: #93c5fd;
             font-size: 18px;
         }
-
         #setup, #punchline {
             font-size: 19px;
             line-height: 1.6;
         }
-
         #punchline {
             color: #facc15;
         }
@@ -330,12 +322,10 @@
                         alert("Could not update favourites.");
                     }
                 });
-
                 item.append(setup, punchline, removeBtn);
                 favouritesList.appendChild(item);
             });
         }
-
         loadBtn.addEventListener("click", loadJoke);
         saveBtn.addEventListener("click", saveFavourite);
 
@@ -350,7 +340,6 @@
                 }
             }
         });
-
         displayFavourites();
     </script>
 </body>
