@@ -1,357 +1,363 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Joke Fetcher</title>
-
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            margin: 0;
-            padding: 30px 16px;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #101827, #243b55);
-            color: #f8fafc;
-        }
-
-        .container {
-            max-width: 700px;
-            margin: auto;
-        }
-
-        h1 {
-            text-align: center;
-            color: #facc15;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #cbd5e1;
-            margin-bottom: 30px;
-        }
-
-        .joke-card, .favourites {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 16px;
-            padding: 25px;
-            margin-bottom: 25px;
-        }
-
-        h2 {
-            color: #93c5fd;
-            font-size: 18px;
-        }
-
-        #setup, #punchline {
-            font-size: 19px;
-            line-height: 1.6;
-        }
-
-        #punchline {
-            color: #facc15;
-        }
-
-        .buttons {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 25px;
-        }
-
-        button {
-            border: none;
-            border-radius: 8px;
-            padding: 12px 18px;
-            background: #2563eb;
-            color: white;
-            font-size: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        button:hover:not(:disabled) {
-            transform: translateY(-2px);
-            background: #1d4ed8;
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        .secondary {
-            background: #be185d;
-        }
-
-        .secondary:hover:not(:disabled) {
-            background: #9d174d;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 15px;
-        }
-
-        .spinner {
-            width: 38px;
-            height: 38px;
-            border: 4px solid #475569;
-            border-top-color: #facc15;
-            border-radius: 50%;
-            margin: auto;
-            animation: spin 0.8s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        .error {
-            color: #fca5a5;
-            font-weight: bold;
-        }
-
-        .favourite-item {
-            border-bottom: 1px solid #475569;
-            padding: 14px 0;
-            line-height: 1.5;
-        }
-
-        .favourite-item button {
-            margin-top: 8px;
-            padding: 7px 12px;
-            background: #475569;
-        }
-
-        .clear-btn {
-            margin-top: 15px;
-            background: #dc2626;
-        }
-
-        [hidden] {
-            display: none !important;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Web Programming Exercises</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: #f4f7fb;
+      color: #1f2937;
+    }
+    header {
+      background: linear-gradient(135deg, #2563eb, #1e3a8a);
+      color: white;
+      text-align: center;
+      padding: 45px 20px;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 34px;
+    }
+    header p {
+      margin-top: 10px;
+      font-size: 16px;
+    }
+    main {
+      width: min(1000px, 92%);
+      margin: 35px auto;
+    }
+    .week-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 22px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.1);
+    }
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+    }
+    .week-badge {
+      background: #e8efff;
+      color: #1e3a8a;
+      font-weight: bold;
+      padding: 4px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+    .task-counter {
+      color: #6b7280;
+      font-size: 14px;
+    }
+    .week-card h3 {
+      margin: 6px 0 4px;
+      color: #1e3a8a;
+    }
+    .week-card > p {
+      margin: 0 0 16px;
+      color: #6b7280;
+    }
+    .tasks-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+    .task-btn {
+      display: block;
+      padding: 13px;
+      text-align: center;
+      text-decoration: none;
+      color: #fff;
+      background: #2563eb;
+      border-radius: 7px;
+      font-weight: bold;
+      transition: .2s;
+    }
+    .task-btn:hover {
+      background: #1e3a8a;
+      transform: translateY(-2px);
+    }
+    .task-btn.special {
+      background: #7c3aed;
+    }
+    .about-card {
+      background: #fff;
+      border-radius: 12px;
+      padding: 22px;
+      box-shadow: 0 4px 14px rgba(0,0,0,.1);
+    }
+    .tech-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .tech-tag {
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+    }
+    footer {
+      padding: 25px;
+      text-align: center;
+      color: #6b7280;
+    }
+    @media (max-width: 600px) {
+      .tasks-container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
 </head>
-
 <body>
-    <main class="container">
-        <h1>😂 Random Joke Fetcher</h1>
-        <p class="subtitle">Need a laugh? Get a random joke!</p>
+  <header>
+    <h1>My Web Programming Exercises</h1>
+    <p>Submitted by: Khadka Satkar | 202637455</p>
+  </header>
 
-        <section class="joke-card">
-            <div id="loading" class="loading" hidden>
-                <div class="spinner"></div>
-                <p>Loading...</p>
-            </div>
+  <main>
+    <!-- Week 1 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 1</span>
+        <span class="task-counter">8 tasks</span>
+      </div>
+      <h3>Week 1</h3>
+      <p>Fundamental web structure and HTML layout exercises.</p>
+      <div class="tasks-container">
+        <a href="week1/WEB%20TASK-1.html" class="task-btn">Task 1</a>
+        <a href="week1/WEB%20TASK-2.html" class="task-btn">Task 2</a>
+        <a href="week1/WEB%20TASK-3.html" class="task-btn">Task 3</a>
+        <a href="week1/WEB%20TASK-4.html" class="task-btn">Task 4</a>
+        <a href="week1/WEB%20TASK-5.html" class="task-btn">Task 5</a>
+        <a href="week1/WEB%20TASK-6.html" class="task-btn">Task 6</a>
+        <a href="week1/WEB%20TASK-7.html" class="task-btn">Task 7</a>
+        <a href="week1/WEB%20TASK-8.html" class="task-btn">Task 8</a>
+      </div>
+    </div>
 
-            <p id="error" class="error" role="alert"></p>
+    <!-- Week 2 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 2</span>
+        <span class="task-counter">8 tasks</span>
+      </div>
+      <h3>Week 2</h3>
+      <p>Practical CSS styling and structured markup tasks.</p>
+      <div class="tasks-container">
+        <a href="week2/WEB%20TASK-1.html" class="task-btn">Task 1</a>
+        <a href="week2/WEB%20TASK-2.html" class="task-btn">Task 2</a>
+        <a href="week2/WEB%20TASK-3.html" class="task-btn">Task 3</a>
+        <a href="week2/WEB%20TASK-4.html" class="task-btn">Task 4</a>
+        <a href="week2/WEB%20TASK-5.html" class="task-btn">Task 5</a>
+        <a href="week2/WEB%20TASK-6.html" class="task-btn">Task 6</a>
+        <a href="week2/WEB%20TASK-7.html" class="task-btn">Task 7</a>
+        <a href="week2/WEB%20TASK-8.html" class="task-btn">Task 8</a>
+      </div>
+    </div>
 
-            <div>
-                <h2>Setup</h2>
-                <p id="setup">Click the button to get a joke!</p>
+    <!-- Week 2_2 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 2_2</span>
+        <span class="task-counter">8 tasks</span>
+      </div>
+      <h3>Week 2_2</h3>
+      <p>Practical CSS styling and structured markup tasks.</p>
+      <div class="tasks-container">
+        <a href="week2_2/WEB%20TASK1.html" class="task-btn">Task 1</a>
+        <a href="week2_2/WEB%20TASK2.html" class="task-btn">Task 2</a>
+        <a href="week2_2/WEB%20TASK3.html" class="task-btn">Task 3</a>
+        <a href="week2_2/WEB%20TASK4.html" class="task-btn">Task 4</a>
+        <a href="week2_2/WEB%20TASK5.html" class="task-btn">Task 5</a>
+        <a href="week2_2/WEB%20TASK6.html" class="task-btn">Task 6</a>
+        <a href="week2_2/WEB%20TASK7.html" class="task-btn">Task 7</a>
+        <a href="week2_2/WEB%20TASK8.html" class="task-btn">Task 8</a>
+      </div>
+    </div>
 
-                <h2>Punchline</h2>
-                <p id="punchline">The punchline will appear here.</p>
-            </div>
+    <!-- Week 3.01 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 3.01</span>
+        <span class="task-counter">8 tasks</span>
+      </div>
+      <h3>Week 3.01</h3>
+      <p>Advanced HTML layouts and modern CSS applications.</p>
+      <div class="tasks-container">
+        <a href="week3-01/WEB%20TASK-1.html" class="task-btn">Task 1</a>
+        <a href="week3-01/WEB%20TASK-2.html" class="task-btn">Task 2</a>
+        <a href="week3-01/WEB%20TASK-3.html" class="task-btn">Task 3</a>
+        <a href="week3-01/WEB%20TASK-4.html" class="task-btn">Task 4</a>
+        <a href="week3-01/WEB%20TASK-5.html" class="task-btn">Task 5</a>
+        <a href="week3-01/WEB%20TASK-6.html" class="task-btn">Task 6</a>
+        <a href="week3-01/WEB%20TASK-7.html" class="task-btn">Task 7</a>
+        <a href="week3-01/WEB%20TASK-8.html" class="task-btn">Task 8</a>
+      </div>
+    </div>
 
-            <div class="buttons">
-                <button id="loadBtn">😂 Load Joke</button>
+    <!-- Week 3.02 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 3.02</span>
+        <span class="task-counter">7 tasks</span>
+      </div>
+      <h3>Week 3.02</h3>
+      <p>Additional responsive design and styling challenges.</p>
+      <div class="tasks-container">
+        <a href="week3-02/WEB%20TASK-1.html" class="task-btn">Task 1</a>
+        <a href="week3-02/WEB%20TASK-2.html" class="task-btn">Task 2</a>
+        <a href="week3-02/WEB%20TASK-3.html" class="task-btn">Task 3</a>
+        <a href="week3-02/WEB%20TASK-4.html" class="task-btn">Task 4</a>
+        <a href="week3-02/WEB%20TASK-5.html" class="task-btn">Task 5</a>
+        <a href="week3-02/WEB%20TASK-6.html" class="task-btn">Task 6</a>
+        <a href="week3-02/WEB%20TASK-7.html" class="task-btn">Task 7</a>
+      </div>
+    </div>
 
-                <button id="saveBtn" class="secondary" disabled>
-                    ❤️ Save Favourite
-                </button>
-            </div>
-        </section>
+    <!-- Week 4 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 4</span>
+        <span class="task-counter">4 tasks</span>
+      </div>
+      <h3>Week 4</h3>
+      <p>Introduction to JavaScript interactivity and logic.</p>
+      <div class="tasks-container">
+        <a href="week4/WEB%20TASK-1.html" class="task-btn">Task 1</a>
+        <a href="week4/WEB%20TASK-2.html" class="task-btn">Task 2</a>
+        <a href="week4/WEB%20TASK-3.html" class="task-btn">Task 3</a>
+        <a href="week4/WEB%20TASK-4.html" class="task-btn">Task 4</a>
+      </div>
+    </div>
 
-        <section class="favourites">
-            <h2>❤️ Favourite Jokes</h2>
-            <div id="favouritesList"></div>
+    <!-- Week 5 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 5</span>
+        <span class="task-counter">3 tasks</span>
+      </div>
+      <h3>Week 5</h3>
+      <p>JavaScript fundamentals, loops, and interactive calculators.</p>
+      <div class="tasks-container">
+        <a href="week5/Counter.html" class="task-btn">Counter</a>
+        <a href="week5/Grade%20calculator.html" class="task-btn">Grade Calc</a>
+        <a href="week5/Loops.html" class="task-btn">Loops</a>
+      </div>
+    </div>
 
-            <button id="clearBtn" class="clear-btn">
-                Clear Favourites
-            </button>
-        </section>
-    </main>
+    <!-- Week 6 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 6</span>
+        <span class="task-counter">6 tasks</span>
+      </div>
+      <h3>Week 6</h3>
+      <p>API fetchers, weather apps, and dynamic data explorers.</p>
+      <div class="tasks-container">
+        <a href="week6/Blog%20fetcher.html" class="task-btn">Blog</a>
+        <a href="week6/Country%20explorer.html" class="task-btn">Countries</a>
+        <a href="week6/Joke%20fetcher.html" class="task-btn">Jokes</a>
+        <a href="week6/Pokemon%20explorer.html" class="task-btn">Pokemon</a>
+        <a href="week6/Random%20profile%20generator.html" class="task-btn">Profiles</a>
+        <a href="week6/Seoul%20weather.html" class="task-btn">Weather</a>
+      </div>
+    </div>
 
-    <script>
-        const API_URL =
-            "https://official-joke-api.appspot.com/random_joke";
+    <!-- Week 7 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 7</span>
+        <span class="task-counter">7 tasks</span>
+      </div>
+      <h3>Week 7</h3>
+      <p>Interactive search utilities and multi-step modules.</p>
+      <div class="tasks-container">
+        <a href="week7/Book%20search.html" class="task-btn special">📚 Book Search</a>
+        <a href="week7/Step1.html" class="task-btn">Step 1</a>
+        <a href="week7/Step2.html" class="task-btn">Step 2</a>
+        <a href="week7/Step3.html" class="task-btn">Step 3</a>
+        <a href="week7/Step4.html" class="task-btn">Step 4</a>
+        <a href="week7/Step5.html" class="task-btn">Step 5</a>
+        <a href="week7/Step6.html" class="task-btn">Step 6</a>
+      </div>
+    </div>
 
-        const loadBtn = document.getElementById("loadBtn");
-        const saveBtn = document.getElementById("saveBtn");
-        const clearBtn = document.getElementById("clearBtn");
+    <!-- Week 8.1 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 8.1</span>
+        <span class="task-counter">4 tasks</span>
+      </div>
+      <h3>Week 8.1</h3>
+      <p>Form attributes, CSS integration, and user authentication UI.</p>
+      <div class="tasks-container">
+        <a href="week8_1/E2%20Addind%20valid%20attributes.html" class="task-btn">Attributes</a>
+        <a href="week8_1/E3%20adding%20css.html" class="task-btn">Adding CSS</a>
+        <a href="week8_1/Student%20registration.html" class="task-btn">Registration</a>
+        <a href="week8_1/login%20form.html" class="task-btn">Login Form</a>
+      </div>
+    </div>
 
-        const loading = document.getElementById("loading");
-        const error = document.getElementById("error");
-        const setupText = document.getElementById("setup");
-        const punchlineText = document.getElementById("punchline");
-        const favouritesList =
-            document.getElementById("favouritesList");
+    <!-- Week 8.2 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 8.2</span>
+        <span class="task-counter">6 tasks</span>
+      </div>
+      <h3>Week 8.2</h3>
+      <p>Advanced practical exercises and upgraded form validation.</p>
+      <div class="tasks-container">
+        <a href="week8_2/C1.html" class="task-btn">Task C1</a>
+        <a href="week8_2/E1.html" class="task-btn">Exercise E1</a>
+        <a href="week8_2/E2.html" class="task-btn">Exercise E2</a>
+        <a href="week8_2/E3.html" class="task-btn">Exercise E3</a>
+        <a href="week8_2/Upgraded%20Registration%20form.html" class="task-btn special">Upgraded Form</a>
+        <a href="week8_2/c2.html" class="task-btn">Task C2</a>
+      </div>
+    </div>
 
-        let currentJoke = null;
-        let favourites = [];
+    <!-- Week 9.1 -->
+    <div class="week-card">
+      <div class="card-top">
+        <span class="week-badge">Week 9.1</span>
+        <span class="task-counter">4 tasks</span>
+      </div>
+      <h3>Week 9.1</h3>
+      <p>Web accessibility auditing, alt-text optimization, and fixes.</p>
+      <div class="tasks-container">
+        <a href="week9_1/Accessibility%20Audit%20Report.html" class="task-btn special">Audit Report</a>
+        <a href="week9_1/Alt%20text.html" class="task-btn">Alt Text</a>
+        <a href="week9_1/div%20button.html" class="task-btn">Div Button</a>
+        <a href="week9_1/lighthouse%20fix.html" class="task-btn">Lighthouse Fix</a>
+      </div>
+    </div>
 
-        try {
-            const saved = JSON.parse(
-                localStorage.getItem("favouriteJokes") || "[]"
-            );
+    <!-- About Section -->
+    <section class="about-card" id="about">
+      <h2>About This Portfolio</h2>
+      <p>This space documents my hands-on learning journey in web programming. It acts as a centralized dashboard to quickly navigate through all my weekly HTML, CSS, and JavaScript milestones.</p>
+      <div class="tech-tags">
+        <span class="tech-tag">HTML5 Semantics</span>
+        <span class="tech-tag">Modern CSS3</span>
+        <span class="tech-tag">JavaScript ES6</span>
+        <span class="tech-tag">Web Accessibility</span>
+      </div>
+    </section>
+  </main>
 
-            if (Array.isArray(saved)) {
-                favourites = saved.filter(joke =>
-                    joke &&
-                    joke.id != null &&
-                    typeof joke.setup === "string" &&
-                    typeof joke.punchline === "string"
-                );
-            }
-        } catch (err) {
-            favourites = [];
-        }
-
-        async function loadJoke() {
-            loading.hidden = false;
-            error.textContent = "";
-            loadBtn.disabled = true;
-            saveBtn.disabled = true;
-
-            setupText.textContent = "Loading...";
-            punchlineText.textContent = "";
-            currentJoke = null;
-
-            try {
-                const response = await fetch(API_URL);
-
-                if (!response.ok) {
-                    throw new Error("Failed to fetch joke");
-                }
-
-                const joke = await response.json();
-
-                if (
-                    !joke ||
-                    !joke.setup ||
-                    !joke.punchline ||
-                    joke.id == null
-                ) {
-                    throw new Error("Invalid joke data");
-                }
-
-                currentJoke = joke;
-                setupText.textContent = joke.setup;
-                punchlineText.textContent = joke.punchline;
-                saveBtn.disabled = false;
-
-            } catch (err) {
-                setupText.textContent =
-                    "Sorry, we couldn't load a joke.";
-                punchlineText.textContent = "";
-
-                error.textContent =
-                    "Please check your internet connection and try again.";
-
-            } finally {
-                loading.hidden = true;
-                loadBtn.disabled = false;
-            }
-        }
-
-        function saveFavourite() {
-            if (!currentJoke) return;
-
-            const exists = favourites.some(
-                joke => joke.id === currentJoke.id
-            );
-
-            if (exists) {
-                alert("This joke is already in your favourites!");
-                return;
-            }
-
-            favourites.push(currentJoke);
-
-            try {
-                localStorage.setItem(
-                    "favouriteJokes",
-                    JSON.stringify(favourites)
-                );
-
-                displayFavourites();
-            } catch (err) {
-                favourites.pop();
-                alert("Could not save the favourite joke.");
-            }
-        }
-
-        function displayFavourites() {
-            favouritesList.replaceChildren();
-
-            if (favourites.length === 0) {
-                const message = document.createElement("p");
-                message.textContent =
-                    "No favourite jokes saved yet.";
-
-                favouritesList.appendChild(message);
-                return;
-            }
-
-            favourites.forEach((joke, index) => {
-                const item = document.createElement("div");
-                item.className = "favourite-item";
-
-                const setup = document.createElement("p");
-                setup.textContent = joke.setup;
-
-                const punchline = document.createElement("p");
-                punchline.textContent = joke.punchline;
-
-                const removeBtn = document.createElement("button");
-                removeBtn.textContent = "Remove";
-
-                removeBtn.addEventListener("click", () => {
-                    const removed = favourites.splice(index, 1);
-
-                    try {
-                        localStorage.setItem(
-                            "favouriteJokes",
-                            JSON.stringify(favourites)
-                        );
-                        displayFavourites();
-                    } catch (err) {
-                        favourites.splice(index, 0, ...removed);
-                        alert("Could not update favourites.");
-                    }
-                });
-
-                item.append(setup, punchline, removeBtn);
-                favouritesList.appendChild(item);
-            });
-        }
-
-        loadBtn.addEventListener("click", loadJoke);
-        saveBtn.addEventListener("click", saveFavourite);
-
-        clearBtn.addEventListener("click", () => {
-            if (confirm("Delete all favourite jokes?")) {
-                try {
-                    localStorage.removeItem("favouriteJokes");
-                    favourites = [];
-                    displayFavourites();
-                } catch (err) {
-                    alert("Could not clear favourites.");
-                }
-            }
-        });
-
-        displayFavourites();
-    </script>
+  <footer>
+    © 2026 Web Programming Practical File
+  </footer>
 </body>
 </html>
