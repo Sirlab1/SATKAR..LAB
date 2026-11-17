@@ -1,1 +1,422 @@
- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Accessibility audit report for My Web Programming Exercises by Khadka Satkar.">
+  <meta name="color-scheme" content="dark">
+  <title>Accessibility Audit Report - Khadka Satkar</title>
+
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --bg: #0c0e22;            /* page background */
+      --bg-2: #12152f;
+      --surface: #171b3d;       /* cards */
+      --surface-2: #1e2350;
+      --text: #eceefb;          /* 15:1 on bg */
+      --muted: #b4badb;         /* 9:1 on surface */
+      --cyan: #22d3ee;
+      --amber: #fbbf24;
+      --coral: #fb7185;
+      --violet: #8b5cf6;
+      --line: rgba(255, 255, 255, 0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+
+    a { color: var(--cyan); }
+    a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+
+    /* ---------- Skip link ---------- */
+    .skip-link {
+      position: absolute; top: -60px; left: 0;
+      padding: 10px 18px; background: var(--amber); color: #111;
+      font-weight: 700; z-index: 2000; text-decoration: none;
+    }
+    .skip-link:focus { top: 0; }
+
+    /* ---------- Reading progress bar ---------- */
+    .progress {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0;
+      background: linear-gradient(90deg, var(--violet), var(--cyan));
+      z-index: 1500;
+    }
+
+    /* ---------- Hero ---------- */
+    .hero {
+      position: relative; overflow: hidden;
+      padding: 80px 24px 96px;
+      background: linear-gradient(160deg, #0c0e22 0%, #151a47 100%);
+    }
+    .blob {
+      position: absolute; border-radius: 50%; filter: blur(70px); opacity: .55;
+      pointer-events: none;
+    }
+    .blob.b1 { width: 380px; height: 380px; background: var(--violet); top: -120px; left: -80px;
+               animation: drift1 14s ease-in-out infinite alternate; }
+    .blob.b2 { width: 320px; height: 320px; background: var(--cyan); bottom: -140px; right: 8%;
+               opacity: .35; animation: drift2 17s ease-in-out infinite alternate; }
+    .blob.b3 { width: 220px; height: 220px; background: var(--coral); top: 30%; right: -60px;
+               opacity: .25; animation: drift1 20s ease-in-out infinite alternate-reverse; }
+
+    @keyframes drift1 { to { transform: translate(90px, 60px) scale(1.15); } }
+    @keyframes drift2 { to { transform: translate(-110px, -50px) scale(1.2); } }
+
+    .hero-inner {
+      position: relative; max-width: 1080px; margin: 0 auto;
+      display: grid; grid-template-columns: 1.25fr 1fr; gap: 48px; align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5.5vw, 3.6rem); margin: 0 0 16px;
+      animation: rise .9s ease both;
+    }
+    .hero .subtitle {
+      font-size: 1.2rem; color: var(--muted); margin: 0 0 24px; max-width: 46ch;
+      animation: rise .9s .15s ease both;
+    }
+    .hero .who {
+      display: inline-block; margin: 0; padding: 10px 20px;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(6px);
+      animation: rise .9s .3s ease both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+    /* ---------- Score gauges ---------- */
+    .gauges { display: flex; gap: 32px; justify-content: center; }
+    .gauge { text-align: center; width: 160px; animation: rise .9s .45s ease both; }
+    .gauge:nth-child(2) { animation-delay: .6s; }
+    .gauge p { margin: 12px 0 0; color: var(--muted); font-size: .95rem; }
+
+    .ring {
+      --p: 0; --c: var(--amber);
+      position: relative; width: 150px; height: 150px; margin: 0 auto;
+      border-radius: 50%;
+      background: conic-gradient(var(--c) calc(var(--p) * 1%), rgba(255, 255, 255, .1) 0);
+      display: grid; place-items: center;
+      box-shadow: 0 0 38px color-mix(in srgb, var(--c) 35%, transparent);
+    }
+    .ring::before {
+      content: ""; position: absolute; inset: 12px; border-radius: 50%;
+      background: var(--bg-2);
+    }
+    .ring span {
+      position: relative; font-family: Georgia, serif; font-size: 2.8rem; font-weight: 700;
+    }
+    .ring.after { --c: var(--cyan); }
+
+    /* pending ring: dashed circle that slowly spins */
+    .ring.pending { background: none; box-shadow: none; }
+    .ring.pending::before { inset: 0; background: none; border: 3px dashed var(--muted);
+                            animation: spin 14s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ---------- Layout ---------- */
+    main { max-width: 1080px; margin: 0 auto; padding: 0 24px 80px; }
+    main:focus { outline: none; }
+
+    .panel {
+      position: relative;
+      background: linear-gradient(180deg, var(--surface), var(--bg-2));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 40px;
+      margin-top: 36px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, .35);
+    }
+    .panel h2 { margin: 0 0 8px; font-size: 1.9rem; }
+    .panel > .lead { margin: 0 0 28px; color: var(--muted); max-width: 68ch; }
+    main > .panel:first-child { margin-top: -48px; }   /* overlaps hero */
+
+    /* ---------- Problem and fix pairs ---------- */
+    .pair {
+      display: grid; grid-template-columns: 1fr 56px 1fr; align-items: stretch;
+      margin-bottom: 20px;
+    }
+    .pair .box {
+      padding: 22px 24px; border-radius: 14px;
+      background: var(--surface-2); border: 1px solid var(--line);
+      transition: transform .3s ease, box-shadow .3s ease;
+    }
+    .pair .found { border-left: 5px solid var(--coral); }
+    .pair .fixed { border-left: 5px solid var(--cyan); }
+    .pair .box:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(0, 0, 0, .4); }
+    .pair .link {
+      display: grid; place-items: center; color: var(--cyan); font-size: 1.8rem;
+    }
+    .pair h3 { margin: 0 0 6px; font-size: 1.2rem; }
+    .pair p { margin: 0; color: var(--muted); }
+    .pair .tag { margin: 0 0 8px; font-weight: 700; font-size: .95rem; }
+    .found .tag { color: var(--coral); }
+    .fixed .tag { color: var(--cyan); }
+
+    code {
+      background: rgba(255, 255, 255, .1); color: var(--text);
+      padding: 2px 7px; border-radius: 5px; font-size: .92em;
+    }
+
+    /* ---------- Screenshots ---------- */
+    .shots { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+    figure { margin: 0; }
+    .frame {
+      border-radius: 12px; overflow: hidden; border: 1px solid var(--line);
+      background: #0a0c1c;
+      transition: transform .35s ease, box-shadow .35s ease;
+    }
+    a:hover .frame, a:focus-visible .frame {
+      transform: translateY(-6px) scale(1.01);
+      box-shadow: 0 0 0 2px var(--cyan), 0 24px 48px rgba(34, 211, 238, .22);
+    }
+    .frame .bar { display: flex; gap: 7px; padding: 10px 14px; background: #1c2145; }
+    .frame .bar i { width: 11px; height: 11px; border-radius: 50%; display: block; }
+    .frame .bar i:nth-child(1) { background: var(--coral); }
+    .frame .bar i:nth-child(2) { background: var(--amber); }
+    .frame .bar i:nth-child(3) { background: #4ade80; }
+    .frame img { display: block; width: 100%; height: auto; }
+    figcaption { margin-top: 12px; color: var(--muted); font-size: .95rem; }
+    figcaption strong { color: var(--text); }
+
+    .placeholder {
+      min-height: 260px; display: grid; place-items: center; text-align: center; padding: 28px;
+      border: 2px dashed rgba(255, 255, 255, .35); border-radius: 12px; color: var(--muted);
+      background: rgba(255, 255, 255, .03);
+    }
+
+    /* ---------- Conclusion ---------- */
+    .conclusion p { max-width: 68ch; color: var(--muted); }
+    .back {
+      display: inline-block; margin-top: 12px; padding: 14px 26px;
+      background: linear-gradient(90deg, var(--cyan), #67e8f9);
+      color: #06222a; font-weight: 700; text-decoration: none; border-radius: 999px;
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+    .back:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(34, 211, 238, .4); }
+
+    footer {
+      text-align: center; padding: 30px 20px;
+      border-top: 1px solid var(--line); background: var(--bg-2); color: var(--muted);
+    }
+    footer p { margin: 0; }
+
+    /* ---------- Scroll reveal (only when JavaScript is running) ---------- */
+    .js .reveal { opacity: 0; transform: translateY(32px);
+                  transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+
+    /* ---------- Responsive ---------- */
+    @media (max-width: 880px) {
+      .hero-inner { grid-template-columns: 1fr; text-align: center; }
+      .hero .subtitle { margin-inline: auto; }
+      .shots { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 680px) {
+      .pair { grid-template-columns: 1fr; gap: 10px; }
+      .pair .link { transform: rotate(90deg); font-size: 1.5rem; }
+      .panel { padding: 24px; }
+      .gauges { gap: 12px; }
+      .gauge { width: 140px; }
+      .ring { width: 130px; height: 130px; }
+    }
+
+    /* ---------- Reduced motion: switch every animation off ---------- */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .js .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="hero">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+
+    <div class="hero-inner">
+      <div>
+        <h1>Accessibility Audit Report</h1>
+        <p class="subtitle">Lighthouse audit and improvements for My Web Programming Exercises</p>
+        <p class="who">Khadka Satkar | 202637455 | Web Programming</p>
+      </div>
+
+      <div class="gauges" role="group" aria-label="Accessibility scores before and after">
+        <div class="gauge">
+          <div class="ring" data-score="85" style="--p:85;"><span>85</span></div>
+          <p>Before improvements</p>
+        </div>
+        <div class="gauge">
+          <div class="ring after" data-score="100"><span>100</span></div>
+          <p>After improvements</p>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+
+    <!-- ===== Problems and fixes ===== -->
+    <section class="panel reveal" aria-labelledby="fixes-heading">
+      <h2 id="fixes-heading">What I found and what I fixed</h2>
+      <p class="lead">The first Lighthouse run (Accessibility only) scored 85 out of 100. Each problem sits next to the fix I made for it.</p>
+      <!-- TODO: keep only the problems that appear in YOUR "Failed audits" list -->
+
+      <article class="pair reveal">
+        <div class="box found">
+          <p class="tag">Problem</p>
+          <h3>Low color contrast</h3>
+          <p>The light gray text, such as the task counts and section descriptions, was too faint against the white background.</p>
+        </div>
+        <div class="link" aria-hidden="true">&rarr;</div>
+        <div class="box fixed">
+          <p class="tag">Fix 1</p>
+          <h3>Darker text color</h3>
+          <p>Changed the gray to <code>#4b5563</code>, about 7.5:1 on white, which passes the WCAG AA minimum of 4.5:1.</p>
+        </div>
+      </article>
+
+      <article class="pair reveal">
+        <div class="box found">
+          <p class="tag">Problem</p>
+          <h3>Links without distinct names</h3>
+          <p>Links like "Task 1" repeated in every week, so a screen reader user could not tell the weeks apart.</p>
+        </div>
+        <div class="link" aria-hidden="true">&rarr;</div>
+        <div class="box fixed">
+          <p class="tag">Fix 2</p>
+          <h3>Descriptive link names</h3>
+          <p>Added hidden text to each link, such as "Task 1 of Week 1", so every link has a unique accessible name.</p>
+        </div>
+      </article>
+
+      <article class="pair reveal">
+        <div class="box found">
+          <p class="tag">Problem</p>
+          <h3>No skip link or main landmark</h3>
+          <p>Keyboard users had to tab through the header before reaching the content, and the page had no <code>&lt;main&gt;</code> region.</p>
+        </div>
+        <div class="link" aria-hidden="true">&rarr;</div>
+        <div class="box fixed">
+          <p class="tag">Fix 3</p>
+          <h3>Skip link and main landmark</h3>
+          <p>Added a "Skip to main content" link and wrapped the content in <code>&lt;main id="main-content"&gt;</code>, meeting WCAG Level A 2.4.1.</p>
+        </div>
+      </article>
+    </section>
+
+    <!-- ===== Screenshots ===== -->
+    <section class="panel reveal" aria-labelledby="shots-heading">
+      <h2 id="shots-heading">Before and after screenshots</h2>
+      <p class="lead">Both screenshots come from the Lighthouse tab in Chrome DevTools. Select an image to open it full size.</p>
+
+      <div class="shots">
+        <figure>
+          <a href="initial-screenshot.png">
+            <div class="frame">
+              <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+              <img src="initial-screenshot.png"
+                   alt="Initial Lighthouse report for my site: Performance 100, Accessibility 85, Best Practices 96, SEO 90.">
+            </div>
+          </a>
+          <figcaption><strong>Initial audit:</strong> Accessibility 85/100</figcaption>
+        </figure>
+
+        <figure>
+          <a href="final-screenshot.png">
+            <div class="frame">
+              <div class="bar" aria-hidden="true"><i></i><i></i><i></i></div>
+              <img src="final-screenshot.png"
+                   alt="Lighthouse report for the improved site at 10:41 AM, showing Performance 100 next to a preview of the new dark page.">
+            </div>
+          </a>
+          <figcaption><strong>Final audit (10:41 AM, after improvements):</strong> Accessibility 100/100</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ===== Conclusion ===== -->
+    <section class="panel conclusion reveal" aria-labelledby="conclusion-heading">
+      <h2 id="conclusion-heading">Conclusion</h2>
+      <p>After fixing three accessibility problems, my Lighthouse accessibility score improved from 85 to 100. This activity showed me how color contrast, clear link names and keyboard navigation help people who use assistive technology.</p>
+      <a class="back" href="../index.html">Back to My Web Programming Exercises</a>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Khadka Satkar | 202637455 | Web Programming</p>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Count the score gauges up from 0 */
+      document.querySelectorAll('.ring[data-score]').forEach(function (ring) {
+        var target = parseInt(ring.getAttribute('data-score'), 10);
+        var label = ring.querySelector('span');
+        if (reduce) { ring.style.setProperty('--p', target); label.textContent = target; return; }
+        var start = null, duration = 1800;
+        ring.style.setProperty('--p', 0);
+        label.textContent = 0;
+        function step(t) {
+          if (!start) start = t;
+          var k = Math.min((t - start) / duration, 1);
+          var eased = 1 - Math.pow(1 - k, 3);
+          var value = Math.round(target * eased);
+          ring.style.setProperty('--p', value);
+          label.textContent = value;
+          if (k < 1) requestAnimationFrame(step);
+        }
+        setTimeout(function () { requestAnimationFrame(step); }, 700);
+      });
+
+      /* Reveal sections as they scroll into view */
+      var items = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.12 });
+        items.forEach(function (el, i) {
+          el.style.transitionDelay = el.classList.contains('pair') ? (i % 3) * 120 + 'ms' : '0ms';
+          io.observe(el);
+        });
+      } else {
+        items.forEach(function (el) { el.classList.add('in'); });
+      }
+
+      /* Reading progress bar */
+      var bar = document.getElementById('progress');
+      function onScroll() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html> 
