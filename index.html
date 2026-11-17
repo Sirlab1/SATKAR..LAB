@@ -1,1 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Web programming exercises and team project by Khadka Satkar: weekly HTML, CSS and JavaScript tasks.">
+  <meta name="color-scheme" content="dark">
+  <title>My Web Programming Exercises</title>
 
+  <script>document.documentElement.classList.add('js');</script>
+
+  <style>
+    :root {
+      --bg: #0c0e22;
+      --bg-2: #12152f;
+      --surface: #171b3d;
+      --surface-2: #1e2350;
+      --text: #eceefb;          /* 15:1 on bg */
+      --muted: #b4badb;         /* 9:1 on surface */
+      --cyan: #22d3ee;
+      --amber: #fbbf24;
+      --coral: #fb7185;
+      --violet: #a78bfa;        /* light violet, 6:1 on surface */
+      --line: rgba(255, 255, 255, 0.12);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; line-height: 1.2; }
+
+    a:focus-visible { outline: 3px solid var(--amber); outline-offset: 3px; }
+
+    .skip-link {
+      position: absolute; top: -60px; left: 0; padding: 10px 18px;
+      background: var(--amber); color: #111; font-weight: 700;
+      text-decoration: none; z-index: 2000;
+    }
+    .skip-link:focus { top: 0; }
+
+    .sr-only {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+    }
+
+    .progress {
+      position: fixed; top: 0; left: 0; height: 4px; width: 0; z-index: 1500;
+      background: linear-gradient(90deg, #8b5cf6, var(--cyan));
+    }
+
+    /* ---------- Hero ---------- */
+    .site-header {
+      position: relative; overflow: hidden; text-align: center;
+      padding: 88px 24px 110px;
+      background: linear-gradient(160deg, #0c0e22 0%, #151a47 100%);
+    }
+    .blob { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; }
+    .blob.b1 { width: 380px; height: 380px; background: #8b5cf6; opacity: .5; top: -120px; left: -80px;
+               animation: drift1 14s ease-in-out infinite alternate; }
+    .blob.b2 { width: 320px; height: 320px; background: var(--cyan); opacity: .32; bottom: -150px; right: 10%;
+               animation: drift2 17s ease-in-out infinite alternate; }
+    .blob.b3 { width: 220px; height: 220px; background: var(--coral); opacity: .22; top: 25%; right: -60px;
+               animation: drift1 20s ease-in-out infinite alternate-reverse; }
+    @keyframes drift1 { to { transform: translate(90px, 60px) scale(1.15); } }
+    @keyframes drift2 { to { transform: translate(-110px, -50px) scale(1.2); } }
+
+    .hero-inner { position: relative; max-width: 900px; margin: 0 auto; }
+    .site-header h1 {
+      font-size: clamp(2.2rem, 6vw, 3.8rem); margin: 0 0 16px;
+      animation: rise .9s ease both;
+    }
+    .site-header .who {
+      display: inline-block; margin: 0 0 36px; padding: 10px 22px;
+      border: 1px solid var(--line); border-radius: 999px;
+      background: rgba(255, 255, 255, .06); backdrop-filter: blur(6px);
+      animation: rise .9s .15s ease both;
+    }
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+
+    .stats {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; justify-content: center; gap: 18px; flex-wrap: wrap;
+      animation: rise .9s .3s ease both;
+    }
+    .stats li {
+      min-width: 140px; padding: 14px 22px; border-radius: 14px;
+      background: rgba(255, 255, 255, .07); border: 1px solid var(--line);
+    }
+    .stats .num { display: block; font-family: Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--cyan); }
+    .stats .lbl { color: var(--muted); font-size: .95rem; }
+
+    /* ---------- Layout ---------- */
+    main { max-width: 1180px; margin: 0 auto; padding: 0 24px 80px; }
+    main:focus { outline: none; }
+
+    .card {
+      --accent: var(--cyan);
+      position: relative; overflow: hidden;
+      background: linear-gradient(180deg, var(--surface), var(--bg-2));
+      border: 1px solid var(--line);
+      border-radius: 20px; padding: 30px; margin-top: 28px;
+      box-shadow: 0 18px 44px rgba(0, 0, 0, .35);
+    }
+    .card::before {                         /* glowing accent bar */
+      content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+      background: var(--accent); box-shadow: 0 0 22px var(--accent);
+    }
+    .card.a0 { --accent: var(--cyan); }
+    .card.a1 { --accent: var(--violet); }
+    .card.a2 { --accent: var(--amber); }
+    .card.a3 { --accent: var(--coral); }
+    main > .card:first-child { margin-top: -56px; }   /* overlaps hero */
+
+    .card-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .badge {
+      padding: 5px 14px; border-radius: 999px; font-weight: 700; font-size: .9rem;
+      color: var(--accent); border: 1px solid var(--accent);
+      background: rgba(255, 255, 255, .04);
+    }
+    .count { margin: 0; color: var(--muted); }
+
+    .card h2 { margin: 14px 0 4px; font-size: 1.7rem; }
+    .card .description { margin: 0 0 22px; color: var(--muted); }
+
+    /* ---------- Link buttons ---------- */
+    .task-grid {
+      list-style: none; margin: 0; padding: 0;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 14px;
+    }
+    .task-grid a {
+      display: flex; align-items: center; justify-content: center;
+      min-height: 54px; padding: 12px 16px;
+      background: var(--surface-2); color: var(--text);
+      border: 1px solid var(--line); border-radius: 12px;
+      font-weight: 700; text-align: center; text-decoration: none;
+      transition: transform .25s ease, background .25s ease, color .25s ease, box-shadow .25s ease;
+    }
+    .task-grid a:hover, .task-grid a:focus-visible {
+      transform: translateY(-4px);
+      background: var(--accent); color: #0c0e22;       /* dark on bright accent */
+      border-color: var(--accent);
+      box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 45%, transparent);
+    }
+    .task-grid a.featured {
+      background: linear-gradient(90deg, #6d28d9, #8b5cf6); color: #fff; border-color: transparent;
+    }
+    .task-grid a.featured:hover, .task-grid a.featured:focus-visible { background: var(--cyan); color: #0c0e22; }
+
+    /* ---------- About ---------- */
+    .about p { margin: 0 0 18px; color: var(--muted); max-width: 70ch; }
+    .tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; }
+    .tags li {
+      padding: 7px 16px; border-radius: 999px; font-weight: 600;
+      background: rgba(255, 255, 255, .07); border: 1px solid var(--line);
+      transition: transform .25s ease, border-color .25s ease;
+    }
+    .tags li:hover { transform: translateY(-3px); border-color: var(--cyan); }
+
+    footer {
+      text-align: center; padding: 30px 20px; color: var(--muted);
+      border-top: 1px solid var(--line); background: var(--bg-2);
+    }
+    footer p { margin: 0; }
+
+    /* ---------- Scroll reveal (only when JavaScript is running) ---------- */
+    .js .reveal { opacity: 0; transform: translateY(34px);
+                  transition: opacity .7s ease, transform .7s ease; }
+    .js .reveal.in { opacity: 1; transform: none; }
+    .js .reveal .task-grid li { opacity: 0; }
+    .js .reveal.in .task-grid li { animation: pop .5s ease both; animation-delay: calc(var(--i) * 55ms + 150ms); }
+    @keyframes pop { from { opacity: 0; transform: scale(.85) translateY(12px); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 520px) {
+      .card { padding: 22px 20px 22px 24px; }
+      .task-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .js .reveal, .js .reveal .task-grid li { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+
+<body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="blob b1" aria-hidden="true"></div>
+    <div class="blob b2" aria-hidden="true"></div>
+    <div class="blob b3" aria-hidden="true"></div>
+    <div class="hero-inner">
+      <h1>My Web Programming Exercises</h1>
+      <p class="who">Submitted by: Khadka Satkar | 202637455</p>
+      <ul class="stats" aria-label="Portfolio summary">
+        <li><span class="num" data-count="13">13</span><span class="lbl">sections</span></li>
+        <li><span class="num" data-count="77">77</span><span class="lbl">tasks and pages</span></li>
+      </ul>
+    </div>
+  </header>
+
+  <main id="main-content" tabindex="-1">
+
+    <section class="card reveal a0" aria-labelledby="sec0-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Team Project</span>
+        <p class="count">4 tasks</p>
+      </div>
+      <h2 id="sec0-heading">Team Project</h2>
+      <p class="description">Final project and presentation</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a class="featured" href="TEAM%20PROJECT/GAZE.LOGO.WEB">GAZE.LOGO.WEB</a></li>
+        <li style="--i:1"><a href="TEAM%20PROJECT/Project-detials.html">PROJECT-PRESENTATION</a></li>
+        <li style="--i:2"><a href="TEAM%20PROJECT/project.html">TEAM-PROJECT</a></li>
+        <li style="--i:3"><a href="TEAM%20PROJECT/team-project.html">GAZE SAMPLE</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a1" aria-labelledby="sec1-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 1</span>
+        <p class="count">8 tasks</p>
+      </div>
+      <h2 id="sec1-heading">Week 1</h2>
+      <p class="description">Fundamental web structure and HTML layout exercises.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week1/WEB%20TASK-1.html">Task 1<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:1"><a href="week1/WEB%20TASK-2.html">Task 2<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:2"><a href="week1/WEB%20TASK-3.html">Task 3<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:3"><a href="week1/WEB%20TASK-4.html">Task 4<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:4"><a href="week1/WEB%20TASK-5.html">Task 5<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:5"><a href="week1/WEB%20TASK-6.html">Task 6<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:6"><a href="week1/WEB%20TASK-7.html">Task 7<span class="sr-only"> of Week 1</span></a></li>
+        <li style="--i:7"><a href="week1/WEB%20TASK-8.html">Task 8<span class="sr-only"> of Week 1</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a2" aria-labelledby="sec2-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 2</span>
+        <p class="count">8 tasks</p>
+      </div>
+      <h2 id="sec2-heading">Week 2</h2>
+      <p class="description">Practical CSS styling and structured markup tasks.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week2/WEB%20TASK-1.html">Task 1<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:1"><a href="week2/WEB%20TASK-2.html">Task 2<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:2"><a href="week2/WEB%20TASK-3.html">Task 3<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:3"><a href="week2/WEB%20TASK-4.html">Task 4<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:4"><a href="week2/WEB%20TASK-5.html">Task 5<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:5"><a href="week2/WEB%20TASK-6.html">Task 6<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:6"><a href="week2/WEB%20TASK-7.html">Task 7<span class="sr-only"> of Week 2</span></a></li>
+        <li style="--i:7"><a href="week2/WEB%20TASK-8.html">Task 8<span class="sr-only"> of Week 2</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a3" aria-labelledby="sec3-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 2_2</span>
+        <p class="count">8 tasks</p>
+      </div>
+      <h2 id="sec3-heading">Week 2_2</h2>
+      <p class="description">Practical CSS styling and structured markup tasks.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week2_2/WEB%20TASK1.html">Task 1<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:1"><a href="week2_2/WEB%20TASK2.html">Task 2<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:2"><a href="week2_2/WEB%20TASK3.html">Task 3<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:3"><a href="week2_2/WEB%20TASK4.html">Task 4<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:4"><a href="week2_2/WEB%20TASK5.html">Task 5<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:5"><a href="week2_2/WEB%20TASK6.html">Task 6<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:6"><a href="week2_2/WEB%20TASK7.html">Task 7<span class="sr-only"> of Week 2_2</span></a></li>
+        <li style="--i:7"><a href="week2_2/WEB%20TASK8.html">Task 8<span class="sr-only"> of Week 2_2</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a0" aria-labelledby="sec4-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 3.01</span>
+        <p class="count">8 tasks</p>
+      </div>
+      <h2 id="sec4-heading">Week 3.01</h2>
+      <p class="description">Advanced HTML layouts and modern CSS applications.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week3-01/WEB%20TASK-1.html">Task 1<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:1"><a href="week3-01/WEB%20TASK-2.html">Task 2<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:2"><a href="week3-01/WEB%20TASK-3.html">Task 3<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:3"><a href="week3-01/WEB%20TASK-4.html">Task 4<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:4"><a href="week3-01/WEB%20TASK-5.html">Task 5<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:5"><a href="week3-01/WEB%20TASK-6.html">Task 6<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:6"><a href="week3-01/WEB%20TASK-7.html">Task 7<span class="sr-only"> of Week 3.01</span></a></li>
+        <li style="--i:7"><a href="week3-01/WEB%20TASK-8.html">Task 8<span class="sr-only"> of Week 3.01</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a1" aria-labelledby="sec5-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 3.02</span>
+        <p class="count">7 tasks</p>
+      </div>
+      <h2 id="sec5-heading">Week 3.02</h2>
+      <p class="description">Additional responsive design and styling challenges.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week3-02/WEB%20TASK-1.html">Task 1<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:1"><a href="week3-02/WEB%20TASK-2.html">Task 2<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:2"><a href="week3-02/WEB%20TASK-3.html">Task 3<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:3"><a href="week3-02/WEB%20TASK-4.html">Task 4<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:4"><a href="week3-02/WEB%20TASK-5.html">Task 5<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:5"><a href="week3-02/WEB%20TASK-6.html">Task 6<span class="sr-only"> of Week 3.02</span></a></li>
+        <li style="--i:6"><a href="week3-02/WEB%20TASK-7.html">Task 7<span class="sr-only"> of Week 3.02</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a2" aria-labelledby="sec6-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 4</span>
+        <p class="count">4 tasks</p>
+      </div>
+      <h2 id="sec6-heading">Week 4</h2>
+      <p class="description">Introduction to JavaScript interactivity and logic.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week4/WEB%20TASK-1.html">Task 1<span class="sr-only"> of Week 4</span></a></li>
+        <li style="--i:1"><a href="week4/WEB%20TASK-2.html">Task 2<span class="sr-only"> of Week 4</span></a></li>
+        <li style="--i:2"><a href="week4/WEB%20TASK-3.html">Task 3<span class="sr-only"> of Week 4</span></a></li>
+        <li style="--i:3"><a href="week4/WEB%20TASK-4.html">Task 4<span class="sr-only"> of Week 4</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a3" aria-labelledby="sec7-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 5</span>
+        <p class="count">3 tasks</p>
+      </div>
+      <h2 id="sec7-heading">Week 5</h2>
+      <p class="description">JavaScript fundamentals, loops, and interactive calculators.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week5/Counter.html">Counter</a></li>
+        <li style="--i:1"><a href="week5/Grade%20calculator.html">Grade Calc</a></li>
+        <li style="--i:2"><a href="week5/Loops.html">Loops</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a0" aria-labelledby="sec8-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 6</span>
+        <p class="count">6 tasks</p>
+      </div>
+      <h2 id="sec8-heading">Week 6</h2>
+      <p class="description">API fetchers, weather apps, and dynamic data explorers.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week6/Blog%20fetcher.html">Blog</a></li>
+        <li style="--i:1"><a href="week6/Country%20explorer.html">Countries</a></li>
+        <li style="--i:2"><a href="week6/jokes%20flecher.html">Jokes</a></li>
+        <li style="--i:3"><a href="week6/Pokemon%20explorer.html">Pokemon</a></li>
+        <li style="--i:4"><a href="week6/Random%20profile%20generator.html">Profiles</a></li>
+        <li style="--i:5"><a href="week6/Seoul%20weather.html">Weather</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a1" aria-labelledby="sec9-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 7</span>
+        <p class="count">7 tasks</p>
+      </div>
+      <h2 id="sec9-heading">Week 7</h2>
+      <p class="description">Interactive search utilities and multi-step modules.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week7/Book%20search.html"><span aria-hidden="true">📚</span> Book Search</a></li>
+        <li style="--i:1"><a href="week7/Step1.html">Step 1<span class="sr-only"> of Week 7</span></a></li>
+        <li style="--i:2"><a href="week7/Step2.html">Step 2<span class="sr-only"> of Week 7</span></a></li>
+        <li style="--i:3"><a href="week7/Step3.html">Step 3<span class="sr-only"> of Week 7</span></a></li>
+        <li style="--i:4"><a href="week7/Step4.html">Step 4<span class="sr-only"> of Week 7</span></a></li>
+        <li style="--i:5"><a href="week7/Step5.html">Step 5<span class="sr-only"> of Week 7</span></a></li>
+        <li style="--i:6"><a href="week7/Step6.html">Step 6<span class="sr-only"> of Week 7</span></a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a2" aria-labelledby="sec10-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 8.1</span>
+        <p class="count">4 tasks</p>
+      </div>
+      <h2 id="sec10-heading">Week 8.1</h2>
+      <p class="description">Form attributes, CSS integration, and user authentication UI.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week8_1/E2%20Addind%20valid%20attributes.html">Attributes</a></li>
+        <li style="--i:1"><a href="week8_1/E3%20adding%20css.html">Adding CSS</a></li>
+        <li style="--i:2"><a href="week8_1/Student%20registration.html">Registration</a></li>
+        <li style="--i:3"><a href="week8_1/login%20form.html">Login Form</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a3" aria-labelledby="sec11-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 8.2</span>
+        <p class="count">6 tasks</p>
+      </div>
+      <h2 id="sec11-heading">Week 8.2</h2>
+      <p class="description">Advanced practical exercises and upgraded form validation.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week8_2/C1.html">Task C1</a></li>
+        <li style="--i:1"><a href="week8_2/E1.html">Exercise E1</a></li>
+        <li style="--i:2"><a href="week8_2/E2.html">Exercise E2</a></li>
+        <li style="--i:3"><a href="week8_2/E3.html">Exercise E3</a></li>
+        <li style="--i:4"><a href="week8_2/Upgraded%20Registration%20form.html">Upgraded Form</a></li>
+        <li style="--i:5"><a href="week8_2/c2.html">Task C2</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal a0" aria-labelledby="sec12-heading">
+      <div class="card-top">
+        <span class="badge" aria-hidden="true">Week 9.1</span>
+        <p class="count">4 tasks</p>
+      </div>
+      <h2 id="sec12-heading">Week 9.1</h2>
+      <p class="description">Web accessibility auditing, alt-text optimization, and fixes.</p>
+      <ul class="task-grid">
+        <li style="--i:0"><a href="week9_1/Accessibility%20Audit%20Report.html">Audit Report</a></li>
+        <li style="--i:1"><a href="week9_1/Alt%20text.html">Alt Text</a></li>
+        <li style="--i:2"><a href="week9_1/div%20button.html">Div Button</a></li>
+        <li style="--i:3"><a href="week9_1/lighthouse%20fix.html">Lighthouse Fix</a></li>
+      </ul>
+    </section>
+
+    <section class="card reveal about a0" aria-labelledby="about-heading">
+      <h2 id="about-heading">About This Portfolio</h2>
+      <p>This space documents my hands-on learning journey in web programming. It acts as a centralized dashboard to quickly navigate through all my weekly HTML, CSS, and JavaScript milestones.</p>
+      <ul class="tags">
+        <li>HTML5 Semantics</li>
+        <li>Modern CSS3</li>
+        <li>JavaScript ES6</li>
+        <li>Web Accessibility</li>
+      </ul>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>&copy; 2026 Web Programming Practical File</p>
+  </footer>
+
+  <script>
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      /* Count up the hero numbers */
+      document.querySelectorAll('[data-count]').forEach(function (el) {
+        var target = parseInt(el.getAttribute('data-count'), 10);
+        if (reduce) return;
+        var start = null, dur = 1600;
+        el.textContent = 0;
+        function step(t) {
+          if (!start) start = t;
+          var k = Math.min((t - start) / dur, 1);
+          el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
+          if (k < 1) requestAnimationFrame(step);
+        }
+        setTimeout(function () { requestAnimationFrame(step); }, 500);
+      });
+
+      /* Reveal cards as they scroll into view */
+      var items = document.querySelectorAll('.reveal');
+      if ('IntersectionObserver' in window && !reduce) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) {
+            if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+          });
+        }, { threshold: 0.1 });
+        items.forEach(function (el) { io.observe(el); });
+      } else {
+        items.forEach(function (el) { el.classList.add('in'); });
+      }
+
+      /* Reading progress bar */
+      var bar = document.getElementById('progress');
+      function onScroll() {
+        var h = document.documentElement;
+        var max = h.scrollHeight - h.clientHeight;
+        bar.style.width = (max > 0 ? (h.scrollTop / max) * 100 : 0) + '%';
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      onScroll();
+    })();
+  </script>
+</body>
+</html>
