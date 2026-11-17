@@ -11,17 +11,17 @@
 
   <style>
     :root {
-      --bg: #0c0e22;
-      --bg-2: #12152f;
-      --surface: #171b3d;
-      --surface-2: #1e2350;
-      --text: #eceefb;          /* 15:1 on bg */
-      --muted: #b4badb;         /* 9:1 on surface */
-      --cyan: #22d3ee;
+      --bg: #07120e;
+      --bg-2: #0c1c16;
+      --surface: #12291f;
+      --surface-2: #1a3a2c;
+      --text: #eefaf3;          /* 16:1 on bg */
+      --muted: #bfdccb;         /* 9:1 on surface */
+      --cyan: #34d399;          /* emerald accent (name kept from old theme) */
       --amber: #fbbf24;
-      --coral: #fb7185;
-      --violet: #a78bfa;        /* light violet, 6:1 on surface */
-      --line: rgba(255, 255, 255, 0.12);
+      --coral: #fb923c;         /* orange accent */
+      --violet: #38bdf8;        /* sky accent */
+      --line: rgba(255, 255, 255, 0.14);
     }
 
     *, *::before, *::after { box-sizing: border-box; }
@@ -54,24 +54,16 @@
 
     .progress {
       position: fixed; top: 0; left: 0; height: 4px; width: 0; z-index: 1500;
-      background: linear-gradient(90deg, #8b5cf6, var(--cyan));
+      background: linear-gradient(90deg, var(--cyan), var(--amber));
     }
 
     /* ---------- Hero ---------- */
     .site-header {
       position: relative; overflow: hidden; text-align: center;
       padding: 88px 24px 110px;
-      background: linear-gradient(160deg, #0c0e22 0%, #151a47 100%);
+      background: var(--bg-2);
+      border-bottom: 1px solid var(--line);
     }
-    .blob { position: absolute; border-radius: 50%; filter: blur(70px); pointer-events: none; }
-    .blob.b1 { width: 380px; height: 380px; background: #8b5cf6; opacity: .5; top: -120px; left: -80px;
-               animation: drift1 14s ease-in-out infinite alternate; }
-    .blob.b2 { width: 320px; height: 320px; background: var(--cyan); opacity: .32; bottom: -150px; right: 10%;
-               animation: drift2 17s ease-in-out infinite alternate; }
-    .blob.b3 { width: 220px; height: 220px; background: var(--coral); opacity: .22; top: 25%; right: -60px;
-               animation: drift1 20s ease-in-out infinite alternate-reverse; }
-    @keyframes drift1 { to { transform: translate(90px, 60px) scale(1.15); } }
-    @keyframes drift2 { to { transform: translate(-110px, -50px) scale(1.2); } }
 
     .hero-inner { position: relative; max-width: 900px; margin: 0 auto; }
     .site-header h1 {
@@ -95,7 +87,7 @@
       min-width: 140px; padding: 14px 22px; border-radius: 14px;
       background: rgba(255, 255, 255, .07); border: 1px solid var(--line);
     }
-    .stats .num { display: block; font-family: Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--cyan); }
+    .stats .num { display: block; font-family: Georgia, serif; font-size: 2.2rem; font-weight: 700; color: var(--amber); }
     .stats .lbl { color: var(--muted); font-size: .95rem; }
 
     /* ---------- Layout ---------- */
@@ -108,11 +100,11 @@
       background: linear-gradient(180deg, var(--surface), var(--bg-2));
       border: 1px solid var(--line);
       border-radius: 20px; padding: 30px; margin-top: 28px;
-      box-shadow: 0 18px 44px rgba(0, 0, 0, .35);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, .3);
     }
     .card::before {                         /* glowing accent bar */
       content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
-      background: var(--accent); box-shadow: 0 0 22px var(--accent);
+      background: var(--accent);
     }
     .card.a0 { --accent: var(--cyan); }
     .card.a1 { --accent: var(--violet); }
@@ -146,14 +138,13 @@
     }
     .task-grid a:hover, .task-grid a:focus-visible {
       transform: translateY(-4px);
-      background: var(--accent); color: #0c0e22;       /* dark on bright accent */
+      background: var(--accent); color: #07120e;       /* dark on bright accent */
       border-color: var(--accent);
-      box-shadow: 0 10px 26px color-mix(in srgb, var(--accent) 45%, transparent);
     }
     .task-grid a.featured {
-      background: linear-gradient(90deg, #6d28d9, #8b5cf6); color: #fff; border-color: transparent;
+      background: linear-gradient(90deg, #065f46, #047857); color: #fff; border-color: transparent;
     }
-    .task-grid a.featured:hover, .task-grid a.featured:focus-visible { background: var(--cyan); color: #0c0e22; }
+    .task-grid a.featured:hover, .task-grid a.featured:focus-visible { background: var(--amber); color: #07120e; }
 
     /* ---------- About ---------- */
     .about p { margin: 0 0 18px; color: var(--muted); max-width: 70ch; }
@@ -197,9 +188,6 @@
   <div class="progress" id="progress" aria-hidden="true"></div>
 
   <header class="site-header">
-    <div class="blob b1" aria-hidden="true"></div>
-    <div class="blob b2" aria-hidden="true"></div>
-    <div class="blob b3" aria-hidden="true"></div>
     <div class="hero-inner">
       <h1>My Web Programming Exercises</h1>
       <p class="who">Submitted by: Khadka Satkar | 202637455</p>
