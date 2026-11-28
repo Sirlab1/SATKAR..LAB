@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/SATKAR..LAB/week11/static/css/main.ec138e63.css",
+    "main.js": "/SATKAR..LAB/week11/static/js/main.52503f9c.js",
+    "static/js/453.3943bc79.chunk.js": "/SATKAR..LAB/week11/static/js/453.3943bc79.chunk.js",
+    "index.html": "/SATKAR..LAB/week11/index.html",
+    "main.ec138e63.css.map": "/SATKAR..LAB/week11/static/css/main.ec138e63.css.map",
+    "main.52503f9c.js.map": "/SATKAR..LAB/week11/static/js/main.52503f9c.js.map",
+    "453.3943bc79.chunk.js.map": "/SATKAR..LAB/week11/static/js/453.3943bc79.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ec138e63.css",
+    "static/js/main.52503f9c.js"
+  ]
+}
